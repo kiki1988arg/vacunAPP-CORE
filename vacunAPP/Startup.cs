@@ -12,6 +12,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
+using vacunAPP.Data;
+using vacunAPP.Data.Repositories;
 
 namespace vacunAPP
 {
@@ -54,8 +57,11 @@ namespace vacunAPP
         });
 
 
-
+            services.AddRepository();
             services.AddControllers();
+
+            services.AddDbContext<vacunAPPContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("vacunAPPContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
