@@ -2,48 +2,40 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Microsoft.EntityFrameworkCore;
+using vacunAPP.Core;
+using vacunAPP.Core.Domain;
+using vacunAPP.Data;
+using vacunAPP.ViewModels;
 
 namespace vacunAPP.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
-        // GET: api/<UserController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private IUnitOfWork _unitOfWork;
+        private IMapper _mapper;
+
+        public UserController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            return new string[] { "value1", "value2" };
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        // GET api/<UserController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<UserController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] UserViewModel signIn)
         {
+            User user = new User();
+            user = _mapper.Map<User>(signIn);
+            _unitOfWork.User.Add(user);               
+            _unitOfWork.Complete();
+            return Ok();
         }
 
-        // PUT api/<UserController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<UserController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
+

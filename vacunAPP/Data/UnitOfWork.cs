@@ -11,13 +11,16 @@ namespace vacunAPP.Data
     public class UnitOfWork : IUnitOfWork
     {
         private readonly vacunAPPContext _context;
+
         public IVaccineRepository Vaccines { get; }
+        public IUserRepository User { get; }
 
 
         public UnitOfWork(vacunAPPContext vacunAPPContext)
         {
             this._context = vacunAPPContext;
             this.Vaccines = new VaccineRepository(_context);
+            this.User = new UserRepository(_context);
         }
         public int Complete()
         {

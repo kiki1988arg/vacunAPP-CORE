@@ -5,10 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\" />
+    <Compile Remove="Migrations\20201012182412_AddAutoIncrementToIdUser.cs" />
+    <Compile Remove="Migrations\20201012182412_AddAutoIncrementToIdUser.Designer.cs" />
+    <Compile Remove="Migrations\20201012182623_AddAutoIncrementToIdUser.cs" />
+    <Compile Remove="Migrations\20201012182623_AddAutoIncrementToIdUser.Designer.cs" />
+    <Compile Remove="Migrations\20201012183237_AddAutoIncrementToIdUser.cs" />
+    <Compile Remove="Migrations\20201012183237_AddAutoIncrementToIdUser.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8">

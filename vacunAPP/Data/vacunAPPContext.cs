@@ -15,11 +15,13 @@ namespace vacunAPP.Data
         }
 
         public DbSet<vacunAPP.Core.Domain.Vaccine> Vaccine { get; set; }
+        public DbSet<vacunAPP.Core.Domain.User> User { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Vaccine>()
-    .HasData(
+            .HasData(
             new Vaccine { Id = 1, Name = "BCG" },
             new Vaccine { Id = 2, Name = "Hepatitis B" },
             new Vaccine { Id = 3, Name = "contra el Neumococo" },
@@ -38,6 +40,17 @@ namespace vacunAPP.Data
             new Vaccine { Id = 16, Name = "la vacuna contra la Fiebre hemorrágica argentina." },
             new Vaccine { Id = 17, Name = "Covid-19" }
         );
+            modelBuilder.Entity<User>(eb =>
+            {
+                eb.HasKey(p => p.Id);
+                eb.Property(b => b.Name).HasColumnType("nvarchar(50)");
+                eb.Property(b => b.LastName).HasColumnType("nvarchar(50)");
+                eb.Property(b => b.Email).HasColumnType("nvarchar(100)");
+                eb.Property(b => b.PhotoUrl).HasColumnType("nvarchar(255)");
+            });
+
+            modelBuilder.Entity<User>()
+            .ToTable("Users");
         }
     }
 }

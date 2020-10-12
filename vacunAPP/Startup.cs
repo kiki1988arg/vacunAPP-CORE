@@ -15,6 +15,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using vacunAPP.Data;
 using vacunAPP.Data.Repositories;
+using System.Text;
+using AutoMapper;
 
 namespace vacunAPP
 {
@@ -38,25 +40,40 @@ namespace vacunAPP
                                   builder =>
                                   {
                                       builder.WithOrigins("http://localhost:4200");
+                                      builder.WithOrigins("https://unlz-vacunapp.web.app/");
                                   });
             });
 
             services
         .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer(options =>
-        {
-            options.Authority = "https://securetoken.google.com/unlz-vacunapp";
-            options.TokenValidationParameters = new TokenValidationParameters
+            // Firebase
+            //.AddJwtBearer(options =>
+            //{
+            //    options.Authority = "https://securetoken.google.com/unlz-vacunapp";
+            //    options.TokenValidationParameters = new TokenValidationParameters
+            //    {
+            //        ValidateIssuer = true,
+            //        ValidIssuer = "https://securetoken.google.com/unlz-vacunapp",
+            //        ValidateAudience = true,
+            //        ValidAudience = "unlz-vacunapp",
+            //        ValidateLifetime = true
+            //    };
+            //});
+            .AddJwtBearer(options =>
             {
-                ValidateIssuer = true,
-                ValidIssuer = "https://securetoken.google.com/unlz-vacunapp",
-                ValidateAudience = true,
-                ValidAudience = "unlz-vacunapp",
-                ValidateLifetime = true
-            };
-        });
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    ValidAudience = Configuration["Jwt:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                };
+            });
 
-
+            services.AddAutoMapper(typeof(Startup));
             services.AddRepository();
             services.AddControllers();
 

@@ -9,6 +9,7 @@ namespace vacunAPP.Core
     public interface IUnitOfWork : IDisposable
     {
         IVaccineRepository Vaccines {get;}
+        IUserRepository User { get;}
         int Complete();
     }
 }
