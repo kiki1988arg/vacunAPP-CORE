@@ -42,11 +42,14 @@ namespace vacunAPP.Data
         );
             modelBuilder.Entity<User>(eb =>
             {
-                eb.HasKey(p => p.Id);
-                eb.Property(b => b.Name).HasColumnType("nvarchar(50)");
-                eb.Property(b => b.LastName).HasColumnType("nvarchar(50)");
+                eb.HasKey(b => b.Id);
+                eb.HasAlternateKey(b => b.NIF).HasName("AlternateKey_NIF");
+                eb.HasAlternateKey(b => b.Email).HasName("AlternateKey_Email");
+                eb.Property(b => b.Gender).HasColumnType("char(1)").IsRequired(true);
+                eb.Property(b => b.Name).HasColumnType("nvarchar(50)").IsRequired(true);
+                eb.Property(b => b.LastName).HasColumnType("nvarchar(50)").IsRequired(true);
                 eb.Property(b => b.Email).HasColumnType("nvarchar(100)");
-                eb.Property(b => b.PhotoUrl).HasColumnType("nvarchar(255)");
+                eb.Property(b => b.PhotoUrl).HasColumnType("nvarchar(255)").IsRequired(true);
             });
 
             modelBuilder.Entity<User>()

@@ -34,18 +34,14 @@ namespace vacunAPP
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
-                                  builder =>
-                                  {
-                                      builder.WithOrigins("http://localhost:4200");
-                                      builder.WithOrigins("https://unlz-vacunapp.web.app/");
-                                  });
+            services.AddCors(options => {
+                options.AddDefaultPolicy(builder => {
+                    builder.WithOrigins("http://localhost:4200", "https://unlz-vacunapp.web.app").AllowAnyMethod().AllowAnyHeader();
+                });
             });
 
             services
-        .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             // Firebase
             //.AddJwtBearer(options =>
             //{
@@ -93,7 +89,7 @@ namespace vacunAPP
 
             app.UseRouting();
 
-            app.UseCors(MyAllowSpecificOrigins);
+            app.UseCors();
 
             app.UseAuthentication();
 

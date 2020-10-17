@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace vacunAPP.Migrations
 {
@@ -6,6 +7,26 @@ namespace vacunAPP.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(50)", nullable: true),
+                    NIF = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(100)", nullable: true),
+                    password = table.Column<string>(nullable: true),
+                    PhotoUrl = table.Column<string>(type: "nvarchar(255)", nullable: true),
+                    BornDate = table.Column<DateTime>(nullable: false),
+                    IsVerify = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Vaccine",
                 columns: table => new
@@ -46,6 +67,9 @@ namespace vacunAPP.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Users");
+
             migrationBuilder.DropTable(
                 name: "Vaccine");
         }

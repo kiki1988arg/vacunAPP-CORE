@@ -13,6 +13,8 @@ namespace vacunAPP.ViewModels
         public string Email { get; set; }
         public string password { get; set; }
         public string PhotoUrl { get; set; }
+        public string Gender { get; set; }
+        public string token { get; set; }
         public DateTime BornDate { get; set; }
         public bool IsVerify { get; set; }
     }

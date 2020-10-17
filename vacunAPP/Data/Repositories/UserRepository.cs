@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using vacunAPP.Core.Domain;
 using vacunAPP.Core.Repositories;
+using vacunAPP.ViewModels;
 
 namespace vacunAPP.Data.Repositories
 {
@@ -13,14 +15,12 @@ namespace vacunAPP.Data.Repositories
         {
 
         }
-        public async Task<User> GetUserProfile(User profile)
+        public async Task<User> GetUserProfile(string userName)
         {
-            var ProfileData = await this.Get(profile.Id);
-            if(ProfileData != null)
-            {                
-                await this.Add(profile);
-            }
-            return ProfileData;
+            User User = await (this._context.User
+                    .Where(b => b.Email == userName)).FirstOrDefaultAsync();
+            return User;
+
         }
     }
 }

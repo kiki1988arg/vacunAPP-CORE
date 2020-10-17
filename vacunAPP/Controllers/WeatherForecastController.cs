@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace vacunAPP.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -24,6 +24,7 @@ namespace vacunAPP.Controllers
         }
 
         [HttpGet]
+        [Route("Weather")]
         public IEnumerable<WeatherForecast> Get()
         {
             var rng = new Random();

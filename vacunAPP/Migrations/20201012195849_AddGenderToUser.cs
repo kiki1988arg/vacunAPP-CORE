@@ -2,20 +2,22 @@
 
 namespace vacunAPP.Migrations
 {
-    public partial class AddPasswordToUser : Migration
+    public partial class AddGenderToUser : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "password",
+                name: "Gender",
                 table: "Users",
-                nullable: true);
+                type: "char(1)",
+                nullable: false,
+                defaultValue: "");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "password",
+                name: "Gender",
                 table: "Users");
         }
     }
