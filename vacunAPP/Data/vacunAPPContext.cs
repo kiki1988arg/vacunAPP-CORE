@@ -48,8 +48,8 @@ namespace vacunAPP.Data
                 eb.Property(b => b.Gender).HasColumnType("char(1)").IsRequired(true);
                 eb.Property(b => b.Name).HasColumnType("nvarchar(50)").IsRequired(true);
                 eb.Property(b => b.LastName).HasColumnType("nvarchar(50)").IsRequired(true);
-                eb.Property(b => b.Email).HasColumnType("nvarchar(100)").IsRequired(true);
-                eb.Property(b => b.password).HasColumnType("nvarchar(100)").IsRequired(true);
+                eb.Property(b => b.Email).HasColumnType("nvarchar(100)");
+                eb.Property(b => b.password).HasColumnType("nvarchar(100)");
                 eb.Property(b => b.PhotoUrl).HasColumnType("nvarchar(255)").IsRequired(true);
             });
 
