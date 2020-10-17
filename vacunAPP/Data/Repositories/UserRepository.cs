@@ -18,7 +18,7 @@ namespace vacunAPP.Data.Repositories
         public async Task<User> GetUserProfile(string userName)
         {
             User User = await (this._context.User
-                    .Where(b => b.Email == userName)).FirstOrDefaultAsync();
+                    .Where(b => b.Email.ToUpper() == userName.ToUpper())).FirstOrDefaultAsync();
             return User;
 
         }

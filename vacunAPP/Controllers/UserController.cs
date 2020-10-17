@@ -53,11 +53,14 @@ namespace vacunAPP.Controllers
         {
             IActionResult response = Unauthorized();
             User user = await _unitOfWork.User.GetUserProfile(loginUser.UserName);
-            UserViewModel userViewModel = _mapper.Map<UserViewModel>(user);
-            if (loginUser.Password == BaseEncodeDecode.Base64Decode(user.password))
+            if (user != null)
             {
-                userViewModel.token = GenerateJSONWebToken(userViewModel);                
-                response = Ok(userViewModel);
+                UserViewModel userViewModel = _mapper.Map<UserViewModel>(user);
+                if (loginUser.Password == BaseEncodeDecode.Base64Decode(user.password))
+                {
+                    userViewModel.token = GenerateJSONWebToken(userViewModel);
+                    response = Ok(userViewModel);
+                }
             }
             return response;
         }

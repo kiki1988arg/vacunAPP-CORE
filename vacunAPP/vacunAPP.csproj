@@ -14,6 +14,8 @@
     <Compile Remove="Migrations\20201012183237_AddAutoIncrementToIdUser.Designer.cs" />
     <Compile Remove="Migrations\20201012192206_AddEmailKeyToUserTable.cs" />
     <Compile Remove="Migrations\20201012192206_AddEmailKeyToUserTable.Designer.cs" />
+    <Compile Remove="Migrations\20201017051833_PasswordNotNullUserTable.cs" />
+    <Compile Remove="Migrations\20201017051833_PasswordNotNullUserTable.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
