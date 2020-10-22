@@ -14,6 +14,8 @@ namespace vacunAPP.Data
 
         public IVaccineRepository Vaccines { get; }
         public IUserRepository User { get; }
+        public IInstituteRepository Institute { get; }
+
 
 
         public UnitOfWork(vacunAPPContext vacunAPPContext)
@@ -21,6 +23,7 @@ namespace vacunAPP.Data
             this._context = vacunAPPContext;
             this.Vaccines = new VaccineRepository(_context);
             this.User = new UserRepository(_context);
+            this.Institute = new InstituteRepository(_context);
         }
         public int Complete()
         {

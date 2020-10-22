@@ -10,6 +10,8 @@ namespace vacunAPP.Core
     {
         IVaccineRepository Vaccines {get;}
         IUserRepository User { get;}
+        IInstituteRepository Institute { get; }
+
         int Complete();
     }
 }

@@ -13,6 +13,7 @@ namespace vacunAPP.Helpers
         public MappingProfile()
         {
             CreateMap<User, UserViewModel>().ReverseMap();
+            CreateMap<Institute, InstituteViewModel>().ReverseMap();
         }
     }
 }
