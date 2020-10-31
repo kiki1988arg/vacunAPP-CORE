@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using vacunAPP.Data;
 
 namespace vacunAPP.Migrations
 {
     [DbContext(typeof(vacunAPPContext))]
-    partial class vacunAPPContextModelSnapshot : ModelSnapshot
+    [Migration("20201025022923_seedTableVaccine")]
+    partial class seedTableVaccine
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -704,42 +706,6 @@ namespace vacunAPP.Migrations
                         });
                 });
 
-            modelBuilder.Entity("vacunAPP.Core.Domain.Person", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("BornDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("char(1)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("NIF")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Person");
-                });
-
             modelBuilder.Entity("vacunAPP.Core.Domain.User", b =>
                 {
                     b.Property<int>("Id")
@@ -1271,15 +1237,6 @@ namespace vacunAPP.Migrations
                             Month = (short)780,
                             Name = "Gripe"
                         });
-                });
-
-            modelBuilder.Entity("vacunAPP.Core.Domain.Person", b =>
-                {
-                    b.HasOne("vacunAPP.Core.Domain.User", "User")
-                        .WithMany("Persons")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

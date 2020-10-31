@@ -16,6 +16,28 @@
     <Compile Remove="Migrations\20201012192206_AddEmailKeyToUserTable.Designer.cs" />
     <Compile Remove="Migrations\20201017051833_PasswordNotNullUserTable.cs" />
     <Compile Remove="Migrations\20201017051833_PasswordNotNullUserTable.Designer.cs" />
+    <Compile Remove="Migrations\20201025015738_seedVaccineTable.cs" />
+    <Compile Remove="Migrations\20201025015738_seedVaccineTable.Designer.cs" />
+    <Compile Remove="Migrations\20201025021155_seedVaccineTable.cs" />
+    <Compile Remove="Migrations\20201025021155_seedVaccineTable.Designer.cs" />
+    <Compile Remove="Migrations\20201025021436_seedVaccineTable.cs" />
+    <Compile Remove="Migrations\20201025021436_seedVaccineTable.Designer.cs" />
+    <Compile Remove="Migrations\20201025021635_seedVaccineTable.cs" />
+    <Compile Remove="Migrations\20201025021635_seedVaccineTable.Designer.cs" />
+    <Compile Remove="Migrations\20201025021659_seedVaccineTable.cs" />
+    <Compile Remove="Migrations\20201025021659_seedVaccineTable.Designer.cs" />
+    <Compile Remove="Migrations\20201025021916_TableVaccine.cs" />
+    <Compile Remove="Migrations\20201025021916_TableVaccine.Designer.cs" />
+    <Compile Remove="Migrations\20201025022357_SeedVaccineTable.cs" />
+    <Compile Remove="Migrations\20201025022357_SeedVaccineTable.Designer.cs" />
+    <Compile Remove="Migrations\20201025022637_seedTableVaccine.cs" />
+    <Compile Remove="Migrations\20201025022637_seedTableVaccine.Designer.cs" />
+    <Compile Remove="Migrations\20201025022759_seedTableVaccine.cs" />
+    <Compile Remove="Migrations\20201025022759_seedTableVaccine.Designer.cs" />
+    <Compile Remove="Migrations\20201026000844_addPersonTable.cs" />
+    <Compile Remove="Migrations\20201026000844_addPersonTable.Designer.cs" />
+    <Compile Remove="Migrations\20201026002109_addPersonTableWithRelationship.cs" />
+    <Compile Remove="Migrations\20201026002109_addPersonTableWithRelationship.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

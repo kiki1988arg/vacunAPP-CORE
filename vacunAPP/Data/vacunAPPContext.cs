@@ -17,8 +17,10 @@ namespace vacunAPP.Data
         public DbSet<vacunAPP.Core.Domain.Vaccine> Vaccine { get; set; }
         public DbSet<vacunAPP.Core.Domain.User> User { get; set; }
         public DbSet<vacunAPP.Core.Domain.Institute> Institute { get; set; }
+        public DbSet<vacunAPP.Core.Domain.Person> Person { get; set; }
 
-        
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>(eb =>
@@ -34,10 +36,19 @@ namespace vacunAPP.Data
                 eb.Property(b => b.PhotoUrl).HasColumnType("nvarchar(255)").IsRequired(true);
             });
 
+            modelBuilder.Entity<Person>(eb =>
+            {
+                eb.HasKey(b => b.Id);
+                eb.Property(b => b.Gender).HasColumnType("char(1)").IsRequired(true);
+                eb.Property(b => b.NIF).HasColumnType("nvarchar(50)").IsRequired(true);
+                eb.Property(b => b.Name).HasColumnType("nvarchar(50)").IsRequired(true);
+                eb.Property(b => b.LastName).HasColumnType("nvarchar(50)").IsRequired(true);
+            });
+
             modelBuilder.Entity<Institute>(eb =>
             {
                 eb.HasKey(b => b.Id);
-                eb.Property(b => b.Id).ValueGeneratedOnAdd();                
+                eb.Property(b => b.Id).ValueGeneratedOnAdd();
                 eb.Property(b => b.Name).HasColumnType("nvarchar(250)").IsRequired(true);
                 eb.Property(b => b.Locale).HasColumnType("nvarchar(100)").IsRequired(true);
                 eb.Property(b => b.Address).HasColumnType("nvarchar(250)").IsRequired(true);
@@ -47,28 +58,484 @@ namespace vacunAPP.Data
                 eb.Property(b => b.Phone).HasColumnType("nvarchar(20)");
             });
 
+
+            modelBuilder.Entity<Vaccine>(eb =>
+            {
+                eb.HasKey(b => b.Id);
+                eb.Property(b => b.Id).ValueGeneratedOnAdd();
+                eb.Property(b => b.Name).HasColumnType("nvarchar(500)");
+                eb.Property(b => b.Description).HasColumnType("nvarchar(500)");
+                eb.Property(b => b.Month).HasColumnType("smallint");
+                eb.Property(b => b.ApplicationType).HasColumnType("nvarchar(500)");
+                eb.Property(b => b.ExtraInfo).HasColumnType("nvarchar(500)");
+                eb.Property(b => b.Inyection).HasColumnType("nvarchar(500)");
+            });
+
             modelBuilder.Entity<User>()
             .ToTable("Users");
+
+            modelBuilder.Entity<User>()
+            .HasMany(c => c.Persons)
+            .WithOne(e => e.User)
+            .HasForeignKey(c => c.UserId)
+            .IsRequired();
+
+
             modelBuilder.Entity<Vaccine>()
-            .HasData(
-            new Vaccine { Id = 1, Name = "BCG" },
-            new Vaccine { Id = 2, Name = "Hepatitis B" },
-            new Vaccine { Id = 3, Name = "contra el Neumococo" },
-            new Vaccine { Id = 4, Name = "la Quíntuple Prevalente DTP-HB-Hib:" },
-            new Vaccine { Id = 5, Name = "la Sabin bivalente oral Meningococo" },
-            new Vaccine { Id = 6, Name = "la Triple vital contra el Sarampión," },
-            new Vaccine { Id = 7, Name = "Rubeóla, Paperas" },
-            new Vaccine { Id = 8, Name = "la vacuna contra la gripe" },
-            new Vaccine { Id = 9, Name = "Hepatitis A, Varicela" },
-            new Vaccine { Id = 10, Name = "la Triple Bacteriano Celular," },
-            new Vaccine { Id = 11, Name = "Triple Bacteriana Acelular" },
-            new Vaccine { Id = 12, Name = "Doble Bacterinana," },
-            new Vaccine { Id = 13, Name = "VPH contra el Virus Papiloma Humano" },
-            new Vaccine { Id = 14, Name = "la Doble Vital" },
-            new Vaccine { Id = 15, Name = "la vacuna contra la Fiebre Amarilla" },
-            new Vaccine { Id = 16, Name = "la vacuna contra la Fiebre hemorrágica argentina." },
-            new Vaccine { Id = 17, Name = "Covid-19" }
-        );
+           .HasData(
+                     new Vaccine
+                     {
+                         Id = 1,
+                         Month = 0,
+                         Name = "BCG",
+                         Inyection = "(única dosis)",
+                         Description = "Previene las formas invasivas de tuberculosis. Debe aplicarse antes de egresar de la maternidad.",
+                         ApplicationType = "Forma de aplicación: Intradérmica.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 2,
+                         Month = 0,
+                         Name = "Hepatitis B",
+                         Inyection = "(dosis neonatal)",
+                         Description = "Previene la transmisión vertical (de la madre al bebé) de la hepatitis B. Debe aplicarse en las primeras 12 horas de vida.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 3,
+                         Month = 2,
+                         Name = "Neumococo Conjugada",
+                         Inyection = "(1° dosis)",
+                         Description = "Previene meningitis, neumonía y sepsis causada por los 13 serotipos de neumococo contenidos en la vacuna.",
+                         ApplicationType = "Forma de aplicación: Intramuscular",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 4,
+                         Month = 2,
+                         Name = "Quíntuple o Pentavalente Celular",
+                         Inyection = "(1° dosis)",
+                         Description = "Previene difteria, tétanos, tos convulsa, hepatitis B, Haemophilus influenzae tipo b.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 5,
+                         Month = 2,
+                         Name = "Polio IPV",
+                         Inyection = "(1° dosis)",
+                         Description = "Previene poliomelitis causada por los poliovirus tipo 1, 2 y 3 (trivalente).",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 6,
+                         Month = 2,
+                         Name = "Rotavirus",
+                         Inyection = "(1° dosis)",
+                         Description = "Previene la diarrea por rotavirus.",
+                         ApplicationType = "Forma de aplicación: Vía oral.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 7,
+                         Month = 3,
+                         Name = "Meningococo Conjugada Cuadrivalente",
+                         Inyection = "(1° dosis)",
+                         Description = "Previene meningitis y sepsis (infección generalizada) causada por los serotipos de meningococo contenidos en la vacuna A,C,W e Y y sus posibles secuelas.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 8,
+                         Month = 4,
+                         Name = "Neumococo conjugada",
+                         Inyection = "(2° dosis)",
+                         Description = "Previene meningitis, neumonía y sepsis causada por los 13 serotipos de neumococo contenidos en la vacuna.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 9,
+                         Month = 4,
+                         Name = "Quíntuple o Pentavalente",
+                         Inyection = "(2° dosis)",
+                         Description = "Previene difteria, tétanos, tos convulsa, hepatitis B, Haemophilus influenzae tipo b.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 10,
+                         Month = 4,
+                         Name = "Polio IPV",
+                         Inyection = "(2° dosis)",
+                         Description = "Previene poliomelitis causada por los poliovirus tipo 1, 2 y 3 (trivalente).",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 11,
+                         Month = 4,
+                         Name = "Rotavirus",
+                         Inyection = "(2° dosis)",
+                         Description = "Previene la diarrea por rotavirus.",
+                         ApplicationType = "Forma de aplicación: Vía oral.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 12,
+                         Month = 5,
+                         Name = "Meningococo Conjugada Cuadrivalente",
+                         Inyection = "(2° dosis)",
+                         Description = "Previene meningitis y sepsis (infección generalizada) causada por los serotipos de meningococo contenidos en la vacuna A,C,W e Y y sus posibles secuelas.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 13,
+                         Month = 6,
+                         Name = "Quíntuple o Pentavalente",
+                         Inyection = "(3° dosis)",
+                         Description = "Previene difteria, tétanos, tos convulsa, hepatitis B, Haemophilus influenzae tipo b.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 14,
+                         Month = 6,
+                         Name = "Polio IPV",
+                         Inyection = "(3° dosis)",
+                         Description = "Previene poliomelitis causada por los poliovirus tipo 1, 2 y 3 (trivalente).",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 15,
+                         Month = 6,
+                         Name = "Gripe",
+                         Inyection = "(si es la primera aplicación son dos dosis separadas por 4 semanas y luego una dosis anual a todos los niños entre 6 y 24 meses)",
+                         Description = "Previene las complicaciones y muerte causadas por el virus de la influenza.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 16,
+                         Month = 12,
+                         Name = "Neumococo Conjugada",
+                         Inyection = "(refuerzo)",
+                         Description = "Previene meningitis, neumonía y sepsis causada por los 13 serotipos de neumococo contenidos en la vacuna.",
+                         ApplicationType = "Forma de aplicación: Inyectable.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 17,
+                         Month = 12,
+                         Name = "Hepatitis A",
+                         Inyection = "(única dosis)",
+                         Description = "Previene hepatitis A y sus complicaciones.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 18,
+                         Month = 12,
+                         Name = "Triple Viral",
+                         Inyection = "(1° dosis)",
+                         Description = "Previene sarampión, rubeola y paperas.",
+                         ApplicationType = "Forma de aplicación: Subcutánea.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 19,
+                         Month = 12,
+                         Name = "Gripe",
+                         Inyection = "(si es la primera aplicación son dos dosis separadas por 4 semanas y luego una dosis anual a todos los niños entre 6 y 24 meses)",
+                         Description = "Previene las complicaciones y muerte causadas por el virus de la influenza.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 20,
+                         Month = 15,
+                         Name = "Meningococo Conjugada Cuadrivalente",
+                         Inyection = "(refuerzo)",
+                         Description = "Previene meningitis y sepsis (infección generalizada) causada por los serotipos de meningococo contenidos en la vacuna A,C,W e Y y sus posibles secuelas.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 21,
+                         Month = 15,
+                         Name = "Varicela",
+                         Inyection = "(única dosis)",
+                         Description = "Previene varicela y sus complicaciones.",
+                         ApplicationType = "Forma de aplicación: Subcutánea, Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 22,
+                         Month = 192,
+                         Name = "Cuádruple o Quíntuple Pentavalente Celular",
+                         Inyection = "(1° refuerzo)",
+                         Description = "Previene difteria, tétanos, tos convulsa, hepatitis B, Haemophilus influenzae tipo b.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 23,
+                         Month = 192,
+                         Name = "Gripe",
+                         Inyection = "(si es la primera vez son dos dosis separadas por 4 semanas y luego una dosis anual a todos los niños entre 6 y 24 meses)",
+                         Description = "Previene las complicaciones y muerte causadas por el virus de la influenza.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 24,
+                         Month = 18,
+                         Name = "Fiebre amarilla",
+                         Inyection = "(1° dosis)",
+                         Description = "Previene fiebre amarilla, enfermedad causada por un virus que se transmite a través de la picadura de mosquitos. Las zonas de riesgo en Argentina son Misiones, Formosa, norte de Corrientes, y algunos departamentos de Chaco, Salta y Jujuy.",
+                         ApplicationType = "Forma de aplicación: Subcutánea.",
+                         ExtraInfo = "EXCLUSIVO ZONAS DE RIESGO"
+                     },
+                     new Vaccine
+                     {
+                         Id = 25,
+                         Month = 18,
+                         Name = "Gripe",
+                         Inyection = "(si es la primera vez son dos dosis separadas por 4 semanas y luego una dosis anual a todos los niños entre 6 y 24 meses)",
+                         Description = "Previene las complicaciones y muerte causadas por el virus de la influenza.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 26,
+                         Month = 24,
+                         Name = "Gripe",
+                         Inyection = "(si es la primera vez son dos dosis separadas por 4 semanas y luego una dosis anual a todos los niños entre 6 y 24 meses)",
+                         Description = "Previene las complicaciones y muerte causadas por el virus de la influenza.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 27,
+                         Month = 72,
+                         Name = "Polio IPV",
+                         Inyection = "(1° refuerzo)",
+                         Description = "Previene poliomelitis causada por los poliovirus tipo 1, 2 y 3 (trivalente).",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 28,
+                         Month = 72,
+                         Name = "Triple Viral",
+                         Inyection = "(2° dosis)",
+                         Description = "Previene sarampión, rubeola y paperas.",
+                         ApplicationType = "Forma de aplicación: Subcutánea.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 29,
+                         Month = 72,
+                         Name = "Triple Bacteriana Celular DTP",
+                         Inyection = "(2° refuerzo)",
+                         Description = "Previene difteria, tétanos y tos convulsa.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 30,
+                         Month = 132,
+                         Name = "Meningococo Conjugada Cuadrivalente",
+                         Inyection = "(única dosis)",
+                         Description = "Previene meningitis y sepsis (infección generalizada) causada por los serotipos de meningococo contenidos en la vacuna A,C,W e Y y sus posibles secuelas.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 31,
+                         Month = 132,
+                         Name = "Triple Bacteriana Acelular dpaT",
+                         Inyection = "(refuerzo)",
+                         Description = "Previene difteria, tétanos y tos convulsa.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 32,
+                         Month = 132,
+                         Name = "VPH (2 dosis)",
+                         Inyection = "(2° dosis)",
+                         Description = "Previene la infección por el Virus del Papiloma Humano (genotipos 6 y 11 de bajo riesgo y 16 y 18 de alto riesgo), principal causa de cáncer de cuello de útero, otros cánceres relacionados y verrugas genitales.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 33,
+                         Month = 132,
+                         Name = "Fiebre amarilla",
+                         Inyection = "(refuerzo)",
+                         Description = "Previene fiebre amarilla, enfermedad causada por un virus que se transmite a través de la picadura de mosquitos. Las zonas de riesgo en Argentina son Misiones, Formosa, norte de Corrientes, y algunos departamentos de Chaco, Salta y Jujuy.",
+                         ApplicationType = "Forma de aplicación: Subcutánea.",
+                         ExtraInfo = "EXCLUSIVO ZONAS DE RIESGO"
+                     },
+                     new Vaccine
+                     {
+                         Id = 34,
+                         Month = 132,
+                         Name = "Hepatitis B",
+                         Inyection = "(en caso de no haber recibido el esquema de vacunación completo -tres dosis- se recomienda iniciarlo o completarlo)",
+                         Description = "Previene hepatitis B.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 35,
+                         Month = 132,
+                         Name = "Triple Viral",
+                         Inyection = "(en caso de no haber recibido el esquema de vacunación completo -dos dosis después del año- se recomienda iniciarlo o completarlo)",
+                         Description = "Previene sarampión, rubeola y paperas.",
+                         ApplicationType = "Forma de aplicación: Subcutánea.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 36,
+                         Month = 180,
+                         Name = "Hepatitis B",
+                         Inyection = "(en caso de no haber recibido el esquema de vacunación completo -tres dosis- se recomienda iniciarlo o completarlo)",
+                         Description = "Previene hepatitis B.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 37,
+                         Month = 180,
+                         Name = "Doble Viral SR o Triple Viral SRP",
+                         Inyection = "(en caso de no haber recibido el esquema de vacunación -dos dosis después del año- se recomienda iniciarlo o completarlo)",
+                         Description = "Previene sarampión, rubeola y paperas.",
+                         ApplicationType = "Forma de aplicación: Subcutánea.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 38,
+                         Month = 180,
+                         Name = "Fiebre hemorrágica argentina",
+                         Inyection = "(única dosis)",
+                         Description = "Previene fiebre hemorrágica argentina, que es una enfermedad infecciosa endémica en el noroeste de la provincia de Buenos Aires, sur de Córdoba, sur de Santa fe y norte de La Pampa.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = "EXCLUSIVO ZONAS DE RIESGO"
+                     },
+                     new Vaccine
+                     {
+                         Id = 39,
+                         Month = 216,
+                         Name = "Hepatitis B",
+                         Inyection = "(en caso de no haber recibido el esquema de vacunación completo -tres dosis- se recomienda iniciarlo o completarlo)",
+                         Description = "Previene hepatitis B.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 40,
+                         Month = 216,
+                         Name = "Triple Viral",
+                         Inyection = "(en caso de no haber recibido el esquema de vacunación se recomienda iniciarlo o completarlo. Las personas que nacieron antes de 1965 se consideran inmunes. Las que nacieron después de 1965 tienen que vacunarse solo si no tienen las dos dosis de la infancia o si tienen serología negativa)",
+                         Description = "Previene sarampión, rubeola y paperas.",
+                         ApplicationType = "Forma de aplicación: Subcutánea.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 41,
+                         Month = 216,
+                         Name = "Doble Bacteriana o Doble Adulto",
+                         Inyection = "(refuerzo cada 10 años)",
+                         Description = "Previene difteria y tétanos.",
+                         ApplicationType = "Forma de aplicación: Inyectable.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 42,
+                         Month = 216,
+                         Name = "Fiebre hemorrágica argentina",
+                         Inyection = "(única dosis)",
+                         Description = "Previene fiebre hemorrágica argentina, que es una enfermedad infecciosa endémica en el noroeste de la provincia de Buenos Aires, sur de Córdoba, sur de Santa fe y norte de La Pampa.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = "EXCLUSIVO ZONAS DE RIESGO"
+                     },
+                     new Vaccine
+                     {
+                         Id = 43,
+                         Month = 780,
+                         Name = "Hepatitis B",
+                         Inyection = "(en caso de no haber recibido el esquema de vacunación completo -tres dosis- se recomienda iniciarlo o completarlo)",
+                         Description = "Previene hepatitis B.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 44,
+                         Month = 780,
+                         Name = "Doble Bacteriana o Doble Adulto",
+                         Inyection = "(refuerzo cada 10 años)",
+                         Description = "Previene difteria y tétanos.",
+                         ApplicationType = "Forma de aplicación: Inyectable.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 45,
+                         Month = 780,
+                         Name = "Gripe",
+                         Inyection = "(dosis anual)",
+                         Description = "Previene las complicaciones y muerte causadas por el virus de la influenza.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     }
+
+           );
+
             modelBuilder.Entity<Institute>()
             .HasData(
                  new Institute
@@ -244,15 +711,16 @@ namespace vacunAPP.Data
                   Time = "lunes a viernes de 9:00 a 15.00 hs",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute{
-                 Id=17,
-                Name="CeSac 26",
-                Address="Gurruchaga 1939",
-                Locale="Villa Crespo",
-                Time="lunes a viernes de 8:30 a 14:00 hs. Solicitando turno al 4897-2156",
-                Lat="-34.587150",
-                Long="-58.425744",
-                Phone="0800-555-VACUNAPP"
+              new Institute
+              {
+                  Id = 17,
+                  Name = "CeSac 26",
+                  Address = "Gurruchaga 1939",
+                  Locale = "Villa Crespo",
+                  Time = "lunes a viernes de 8:30 a 14:00 hs. Solicitando turno al 4897-2156",
+                  Lat = "-34.587150",
+                  Long = "-58.425744",
+                  Phone = "0800-555-VACUNAPP"
               },
               new Institute
               {
@@ -715,7 +1183,7 @@ namespace vacunAPP.Data
                   Lat = "-34.599903",
                   Long = "-58.511231",
                   Phone = "0800-555-VACUNAPP"
-              }     
+              }
 
             );
 

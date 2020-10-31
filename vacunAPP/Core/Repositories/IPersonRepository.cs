@@ -6,7 +6,9 @@ using vacunAPP.Core.Domain;
 
 namespace vacunAPP.Core.Repositories
 {
-    public interface IVaccineRepository : IRepository<Vaccine>
+    public interface IPersonRepository : IRepository<Person>
     {
+        Task <IEnumerable<Person>> GetPersonsById(int Id);
+
     }
 }

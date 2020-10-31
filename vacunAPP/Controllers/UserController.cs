@@ -51,34 +51,34 @@ namespace vacunAPP.Controllers
         [Route("Login")]
         public async Task<IActionResult> LoginAsync([FromBody] LoginViewModel loginUser)
         {
-            IActionResult response = Unauthorized();
+            IActionResult response = BadRequest();
             User user = await _unitOfWork.User.GetUserProfile(loginUser.UserName);
             if (user != null)
             {
                 UserViewModel userViewModel = _mapper.Map<UserViewModel>(user);
                 if (loginUser.Password == BaseEncodeDecode.Base64Decode(user.password))
                 {
-                    userViewModel.token = GenerateJSONWebToken(userViewModel);
+                    userViewModel.token = GenerateJSONWebToken(user);
                     response = Ok(userViewModel);
                 }
             }
             return response;
         }
 
-        private string GenerateJSONWebToken(UserViewModel userInfo)
+        private string GenerateJSONWebToken(User userInfo)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new[] {
-                new Claim(JwtRegisteredClaimNames.Sub, userInfo.Name),
-                new Claim(JwtRegisteredClaimNames.Email, userInfo.Email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(ClaimTypes.NameIdentifier, userInfo.Id.ToString()),
+
             };
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
               _config["Jwt:Issuer"],
+              claims: claims,
               null,
-              expires: DateTime.Now.AddMinutes(120),
+              expires: DateTime.Now.AddDays(365),
               signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

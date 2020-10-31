@@ -14,6 +14,7 @@ namespace vacunAPP.Helpers
         {
             CreateMap<User, UserViewModel>().ReverseMap();
             CreateMap<Institute, InstituteViewModel>().ReverseMap();
+            CreateMap<Person, PersonViewModel>().ReverseMap();
         }
     }
 }

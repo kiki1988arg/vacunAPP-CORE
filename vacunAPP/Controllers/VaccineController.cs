@@ -12,7 +12,7 @@ using vacunAPP.Data;
 
 namespace vacunAPP.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class VaccineController : ControllerBase
@@ -28,6 +28,21 @@ namespace vacunAPP.Controllers
         public async Task<IEnumerable<Vaccine>> Get()
         {
             return await _unitOfWork.Vaccines.GetAll();
+        }
+
+        [HttpGet]
+        [Route("Group")]
+        public async Task<IEnumerable<object>> GetGroupedByMonth()
+        {
+            IEnumerable<Vaccine> vaccines = await _unitOfWork.Vaccines.GetAll();
+            //var res = (from z in vaccines
+            //           group z.Month by z.Id into g
+            //           select new { Month = g.Key, Vaccines = g.ToList() });
+            var res = vaccines.OrderBy(item => item.Month)
+                 .GroupBy(item => item.Month)                
+                 .Select(group => new { Month = group.Key, Vaccines = group.ToList() })
+                 .ToList();
+            return res;
         }
 
         // GET api/<Vaccines>/5
