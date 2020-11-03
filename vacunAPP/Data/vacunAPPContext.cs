@@ -71,6 +71,17 @@ namespace vacunAPP.Data
                 eb.Property(b => b.Inyection).HasColumnType("nvarchar(500)");
             });
 
+            modelBuilder.Entity<PersonVaccine>()
+            .HasKey(bc => new { bc.PersonId, bc.VaccineId });
+                modelBuilder.Entity<PersonVaccine>()
+                    .HasOne(bc => bc.Person)
+                    .WithMany(b => b.PersonVaccine)
+                    .HasForeignKey(bc => bc.PersonId);
+                modelBuilder.Entity<PersonVaccine>()
+                    .HasOne(bc => bc.Vaccine)
+                    .WithMany(c => c.PersonVaccine)
+                    .HasForeignKey(bc => bc.VaccineId);
+
             modelBuilder.Entity<User>()
             .ToTable("Users");
 

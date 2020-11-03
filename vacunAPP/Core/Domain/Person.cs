@@ -14,6 +14,7 @@ namespace vacunAPP.Core.Domain
         public string Gender { get; set; }
         public DateTime BornDate { get; set; }
         public int UserId { get; set; }
-        public User User { get; set; }
+        public User User { get; set; }         
+        public ICollection<PersonVaccine> PersonVaccine { get; set; }
     }
 }

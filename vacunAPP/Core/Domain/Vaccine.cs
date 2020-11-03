@@ -14,5 +14,6 @@ namespace vacunAPP.Core.Domain
         public int Month { get; set; }
         public string ApplicationType { get; set; }
         public string ExtraInfo { get; set; }
+        public ICollection<PersonVaccine> PersonVaccine { get; set; }
     }
 }
