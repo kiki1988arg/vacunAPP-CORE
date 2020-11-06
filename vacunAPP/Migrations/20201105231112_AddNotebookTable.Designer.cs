@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using vacunAPP.Data;
 
 namespace vacunAPP.Migrations
 {
     [DbContext(typeof(vacunAPPContext))]
-    partial class vacunAPPContextModelSnapshot : ModelSnapshot
+    [Migration("20201105231112_AddNotebookTable")]
+    partial class AddNotebookTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -750,27 +752,39 @@ namespace vacunAPP.Migrations
                     b.Property<DateTime>("ApplicationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("CenterId")
+                    b.Property<string>("CenterId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CenterId1")
                         .HasColumnType("int");
 
                     b.Property<string>("NIF")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PersonNIF")
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ProfesionalId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ProfessionalId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("VaccineId")
+                    b.Property<string>("VaccineId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("VaccineId1")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CenterId");
+                    b.HasIndex("CenterId1");
 
-                    b.HasIndex("NIF");
+                    b.HasIndex("PersonNIF");
 
                     b.HasIndex("ProfessionalId");
 
-                    b.HasIndex("VaccineId");
+                    b.HasIndex("VaccineId1");
 
                     b.ToTable("Notebook");
                 });
@@ -1363,11 +1377,11 @@ namespace vacunAPP.Migrations
                 {
                     b.HasOne("vacunAPP.Core.Domain.Center", "Center")
                         .WithMany()
-                        .HasForeignKey("CenterId");
+                        .HasForeignKey("CenterId1");
 
-                    b.HasOne("vacunAPP.Core.Domain.Person", "Person")
+                    b.HasOne("vacunAPP.Core.Domain.Person", null)
                         .WithMany("Notebooks")
-                        .HasForeignKey("NIF");
+                        .HasForeignKey("PersonNIF");
 
                     b.HasOne("vacunAPP.Core.Domain.Professional", "Professional")
                         .WithMany()
@@ -1375,7 +1389,7 @@ namespace vacunAPP.Migrations
 
                     b.HasOne("vacunAPP.Core.Domain.Vaccine", "Vaccine")
                         .WithMany()
-                        .HasForeignKey("VaccineId");
+                        .HasForeignKey("VaccineId1");
                 });
 
             modelBuilder.Entity("vacunAPP.Core.Domain.Person", b =>

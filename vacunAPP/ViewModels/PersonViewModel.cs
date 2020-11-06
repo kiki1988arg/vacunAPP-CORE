@@ -7,7 +7,7 @@ namespace vacunAPP.ViewModels
 {
     public class PersonViewModel
     {
-            public int Id{ get; set; }
+            public int NotebookId{ get; set; }
             public string Name { get; set; }
             public string LastName { get; set; }
             public string NIF { get; set; }

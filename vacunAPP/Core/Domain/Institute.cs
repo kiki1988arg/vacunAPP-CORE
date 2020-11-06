@@ -9,11 +9,11 @@ namespace vacunAPP.Core.Domain
     {
         public int Id { set; get; }
         public string Name { set; get; }
-        public string Address { set; get; }
-        public string Locale { set; get; }
-        public string Time { set; get; }
-        public string Lat { set; get; }
-        public string Long { set; get; }
-        public string Phone { set; get; }
+        public string CUIT { set; get; }
+        public string License { set; get; }
+        public string Contract { set; get; }
+        public DateTime CreatedAt { set; get; }
+        public ICollection<Professional> Profesionals { set; get; }
+        public ICollection<Center> Centers { set; get; }
     }
 }

@@ -6,11 +6,8 @@ using vacunAPP.Core.Domain;
 
 namespace vacunAPP.Core.Repositories
 {
-    public interface IPersonRepository : IRepository<Person>
+    public interface IICenterRepository : IRepository<Center>
     {
-        Task <IEnumerable<Person>> GetPersonsById(string Id);
-        Task<Person> GetPersonByNIF(string NIF);
-
-
     }
 }
+

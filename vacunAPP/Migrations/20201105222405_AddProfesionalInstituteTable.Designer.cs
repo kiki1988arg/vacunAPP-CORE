@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using vacunAPP.Data;
 
 namespace vacunAPP.Migrations
 {
     [DbContext(typeof(vacunAPPContext))]
-    partial class vacunAPPContextModelSnapshot : ModelSnapshot
+    [Migration("20201105222405_AddProfesionalInstituteTable")]
+    partial class AddProfesionalInstituteTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -740,41 +742,6 @@ namespace vacunAPP.Migrations
                     b.ToTable("Institute");
                 });
 
-            modelBuilder.Entity("vacunAPP.Core.Domain.Notebook", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("ApplicationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("CenterId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NIF")
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int?>("ProfessionalId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("VaccineId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CenterId");
-
-                    b.HasIndex("NIF");
-
-                    b.HasIndex("ProfessionalId");
-
-                    b.HasIndex("VaccineId");
-
-                    b.ToTable("Notebook");
-                });
-
             modelBuilder.Entity("vacunAPP.Core.Domain.Person", b =>
                 {
                     b.Property<string>("NIF")
@@ -1357,25 +1324,6 @@ namespace vacunAPP.Migrations
                     b.HasOne("vacunAPP.Core.Domain.Institute", null)
                         .WithMany("Centers")
                         .HasForeignKey("InstituteId");
-                });
-
-            modelBuilder.Entity("vacunAPP.Core.Domain.Notebook", b =>
-                {
-                    b.HasOne("vacunAPP.Core.Domain.Center", "Center")
-                        .WithMany()
-                        .HasForeignKey("CenterId");
-
-                    b.HasOne("vacunAPP.Core.Domain.Person", "Person")
-                        .WithMany("Notebooks")
-                        .HasForeignKey("NIF");
-
-                    b.HasOne("vacunAPP.Core.Domain.Professional", "Professional")
-                        .WithMany()
-                        .HasForeignKey("ProfessionalId");
-
-                    b.HasOne("vacunAPP.Core.Domain.Vaccine", "Vaccine")
-                        .WithMany()
-                        .HasForeignKey("VaccineId");
                 });
 
             modelBuilder.Entity("vacunAPP.Core.Domain.Person", b =>

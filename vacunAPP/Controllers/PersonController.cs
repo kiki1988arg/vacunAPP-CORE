@@ -38,16 +38,17 @@ namespace vacunAPP.Controllers
         [Route("me")]
         public async Task<IEnumerable<PersonViewModel>> GetMyPersons()
         {
-            var persons = await this._unitOfWork.Person.GetPersonsById(int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
+            var persons = await this._unitOfWork.Person.GetPersonsById(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             IEnumerable<PersonViewModel> personList = this._mapper.Map<IEnumerable<Person>, IEnumerable<PersonViewModel>>(persons);
             return personList;
         }
 
         // GET api/<PersonController>/5
         [HttpGet("{id}")]
-        public async Task<Person> Get(int id)
+        public async Task<Person> Get(string id)
         {
-            return await this._unitOfWork.Person.Get(id);
+            var res=  await this._unitOfWork.Person.GetPersonByNIF(id);
+            return res;
         }
 
 
@@ -56,7 +57,7 @@ namespace vacunAPP.Controllers
         public void Post([FromBody] PersonViewModel personVW)
         {
             Person person = _mapper.Map<Person>(personVW);
-            person.UserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            person.ParentPersonNIF = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             this._unitOfWork.Person.Add(person);
             this._unitOfWork.Complete();
         }

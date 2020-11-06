@@ -39,8 +39,11 @@ namespace vacunAPP.Controllers
             //           group z.Month by z.Id into g
             //           select new { Month = g.Key, Vaccines = g.ToList() });
             var res = vaccines.OrderBy(item => item.Month)
-                 .GroupBy(item => item.Month)                
-                 .Select(group => new { Month = group.Key, Vaccines = group.ToList() })
+                 .GroupBy(x => new { new DateTime(0).AddMonths(x.Month).Year})
+                 .Select(group => new { Year = group.Key.Year, Month = group.ToList()
+                 .GroupBy(vac=> vac.Month)
+                 .Select(g2 => new { Month = g2.Key, Vaccines = g2.ToList()})})     
+                 
                  .ToList();
             return res;
         }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using vacunAPP.Data;
 
 namespace vacunAPP.Migrations
 {
     [DbContext(typeof(vacunAPPContext))]
-    partial class vacunAPPContextModelSnapshot : ModelSnapshot
+    [Migration("20201104005816_0-to-many-PersonUserOptional-4")]
+    partial class _0tomanyPersonUserOptional4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,9 +31,6 @@ namespace vacunAPP.Migrations
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(250)");
-
-                    b.Property<int?>("InstituteId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Lat")
                         .HasColumnType("nvarchar(20)");
@@ -55,8 +54,6 @@ namespace vacunAPP.Migrations
                         .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("InstituteId");
 
                     b.ToTable("Center");
 
@@ -709,72 +706,6 @@ namespace vacunAPP.Migrations
                         });
                 });
 
-            modelBuilder.Entity("vacunAPP.Core.Domain.Institute", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CUIT")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(25)");
-
-                    b.Property<string>("Contract")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(25)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("DateTime");
-
-                    b.Property<string>("License")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(25)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(250)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Institute");
-                });
-
-            modelBuilder.Entity("vacunAPP.Core.Domain.Notebook", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("ApplicationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("CenterId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NIF")
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int?>("ProfessionalId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("VaccineId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CenterId");
-
-                    b.HasIndex("NIF");
-
-                    b.HasIndex("ProfessionalId");
-
-                    b.HasIndex("VaccineId");
-
-                    b.ToTable("Notebook");
-                });
-
             modelBuilder.Entity("vacunAPP.Core.Domain.Person", b =>
                 {
                     b.Property<string>("NIF")
@@ -803,50 +734,6 @@ namespace vacunAPP.Migrations
                     b.HasIndex("ParentPersonNIF");
 
                     b.ToTable("Person");
-                });
-
-            modelBuilder.Entity("vacunAPP.Core.Domain.Professional", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("Function")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(25)");
-
-                    b.Property<int>("InstituteId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("MN")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NIF")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(250)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InstituteId");
-
-                    b.ToTable("Profesional");
                 });
 
             modelBuilder.Entity("vacunAPP.Core.Domain.User", b =>
@@ -1352,46 +1239,11 @@ namespace vacunAPP.Migrations
                         });
                 });
 
-            modelBuilder.Entity("vacunAPP.Core.Domain.Center", b =>
-                {
-                    b.HasOne("vacunAPP.Core.Domain.Institute", null)
-                        .WithMany("Centers")
-                        .HasForeignKey("InstituteId");
-                });
-
-            modelBuilder.Entity("vacunAPP.Core.Domain.Notebook", b =>
-                {
-                    b.HasOne("vacunAPP.Core.Domain.Center", "Center")
-                        .WithMany()
-                        .HasForeignKey("CenterId");
-
-                    b.HasOne("vacunAPP.Core.Domain.Person", "Person")
-                        .WithMany("Notebooks")
-                        .HasForeignKey("NIF");
-
-                    b.HasOne("vacunAPP.Core.Domain.Professional", "Professional")
-                        .WithMany()
-                        .HasForeignKey("ProfessionalId");
-
-                    b.HasOne("vacunAPP.Core.Domain.Vaccine", "Vaccine")
-                        .WithMany()
-                        .HasForeignKey("VaccineId");
-                });
-
             modelBuilder.Entity("vacunAPP.Core.Domain.Person", b =>
                 {
                     b.HasOne("vacunAPP.Core.Domain.Person", "ParentPerson")
                         .WithMany()
                         .HasForeignKey("ParentPersonNIF");
-                });
-
-            modelBuilder.Entity("vacunAPP.Core.Domain.Professional", b =>
-                {
-                    b.HasOne("vacunAPP.Core.Domain.Institute", null)
-                        .WithMany("Profesionals")
-                        .HasForeignKey("InstituteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("vacunAPP.Core.Domain.User", b =>

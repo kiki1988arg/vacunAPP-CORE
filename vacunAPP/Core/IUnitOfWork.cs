@@ -12,7 +12,8 @@ namespace vacunAPP.Core
         IUserRepository User { get;}
 
         IPersonRepository Person { get; }
-        IInstituteRepository Institute { get; }
+        IICenterRepository Institute { get; }
+        IINotebookRepository Notebook { get; }
 
         int Complete();
     }

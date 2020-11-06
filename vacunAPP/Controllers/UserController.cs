@@ -40,9 +40,12 @@ namespace vacunAPP.Controllers
         public IActionResult Post([FromBody] UserViewModel signIn)
         {
             User user = new User();
+            Person person = new Person();
             signIn.password = BaseEncodeDecode.Base64Encode(signIn.password);
             user = _mapper.Map<User>(signIn);
+            person = _mapper.Map<Person>(signIn);
             _unitOfWork.User.Add(user);
+            _unitOfWork.Person.Add(person);
             _unitOfWork.Complete();
             return Ok();
         }
@@ -59,6 +62,8 @@ namespace vacunAPP.Controllers
                 if (loginUser.Password == BaseEncodeDecode.Base64Decode(user.password))
                 {
                     userViewModel.token = GenerateJSONWebToken(user);
+                    userViewModel.Name = user.Person.Name;
+                    userViewModel.LastName = user.Person.LastName;                    
                     response = Ok(userViewModel);
                 }
             }
@@ -71,7 +76,7 @@ namespace vacunAPP.Controllers
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new[] {
-                new Claim(ClaimTypes.NameIdentifier, userInfo.Id.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, userInfo.NIF.ToString()),
 
             };
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],

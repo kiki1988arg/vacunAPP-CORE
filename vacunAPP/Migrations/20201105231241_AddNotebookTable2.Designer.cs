@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using vacunAPP.Data;
 
 namespace vacunAPP.Migrations
 {
     [DbContext(typeof(vacunAPPContext))]
-    partial class vacunAPPContextModelSnapshot : ModelSnapshot
+    [Migration("20201105231241_AddNotebookTable2")]
+    partial class AddNotebookTable2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -754,6 +756,9 @@ namespace vacunAPP.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("NIF")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PersonNIF")
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<int?>("ProfessionalId")
@@ -766,7 +771,7 @@ namespace vacunAPP.Migrations
 
                     b.HasIndex("CenterId");
 
-                    b.HasIndex("NIF");
+                    b.HasIndex("PersonNIF");
 
                     b.HasIndex("ProfessionalId");
 
@@ -1365,9 +1370,9 @@ namespace vacunAPP.Migrations
                         .WithMany()
                         .HasForeignKey("CenterId");
 
-                    b.HasOne("vacunAPP.Core.Domain.Person", "Person")
+                    b.HasOne("vacunAPP.Core.Domain.Person", null)
                         .WithMany("Notebooks")
-                        .HasForeignKey("NIF");
+                        .HasForeignKey("PersonNIF");
 
                     b.HasOne("vacunAPP.Core.Domain.Professional", "Professional")
                         .WithMany()

@@ -15,9 +15,17 @@ namespace vacunAPP.Data.Repositories
 
         }
 
-        async Task<IEnumerable<Person>> IPersonRepository.GetPersonsById(int Id)
+        public Task<Person> GetPersonByNIF(string NIF)
         {
-            return await _context.Person.Where(c => c.UserId == Id).ToListAsync();
+            return _context.Person
+                .Include(c=>c.Notebooks).ThenInclude(d=>d.Vaccine)
+                .Include(d=>d.Notebooks).ThenInclude(d => d.Center)
+                .SingleAsync(c => c.NIF == NIF);
+        }
+
+        async Task<IEnumerable<Person>> IPersonRepository.GetPersonsById(string Id)
+        {
+            return await _context.Person.Where(c => c.ParentPersonNIF == Id).ToListAsync();
         }
     }
 }

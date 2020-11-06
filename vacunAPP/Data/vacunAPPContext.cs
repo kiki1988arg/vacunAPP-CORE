@@ -16,8 +16,12 @@ namespace vacunAPP.Data
 
         public DbSet<vacunAPP.Core.Domain.Vaccine> Vaccine { get; set; }
         public DbSet<vacunAPP.Core.Domain.User> User { get; set; }
-        public DbSet<vacunAPP.Core.Domain.Institute> Institute { get; set; }
+        public DbSet<vacunAPP.Core.Domain.Center> Center { get; set; }
         public DbSet<vacunAPP.Core.Domain.Person> Person { get; set; }
+        public DbSet<vacunAPP.Core.Domain.Professional> Profesional { get; set; }
+        public DbSet<vacunAPP.Core.Domain.Institute> Institute { get; set; }
+
+        public DbSet<vacunAPP.Core.Domain.Notebook> Notebook { get; set; }
 
 
 
@@ -25,27 +29,36 @@ namespace vacunAPP.Data
         {
             modelBuilder.Entity<User>(eb =>
             {
-                eb.HasKey(b => b.Id);
+                eb.HasKey(b => b.Email);
                 eb.HasAlternateKey(b => b.NIF).HasName("AlternateKey_NIF");
-                eb.HasAlternateKey(b => b.Email).HasName("AlternateKey_Email");
-                eb.Property(b => b.Gender).HasColumnType("char(1)").IsRequired(true);
-                eb.Property(b => b.Name).HasColumnType("nvarchar(50)").IsRequired(true);
-                eb.Property(b => b.LastName).HasColumnType("nvarchar(50)").IsRequired(true);
-                eb.Property(b => b.Email).HasColumnType("nvarchar(100)");
-                eb.Property(b => b.password).HasColumnType("nvarchar(100)");
-                eb.Property(b => b.PhotoUrl).HasColumnType("nvarchar(255)").IsRequired(true);
+                eb.Property(b => b.Email).HasColumnType("nvarchar(100)").IsRequired(true);
+                eb.Property(b => b.password).HasColumnType("nvarchar(100)").IsRequired(true);
+                eb.Property(b => b.NIF).HasColumnType("nvarchar(50)").IsRequired(true);
             });
 
             modelBuilder.Entity<Person>(eb =>
             {
-                eb.HasKey(b => b.Id);
+                eb.HasKey(b => b.NIF);
                 eb.Property(b => b.Gender).HasColumnType("char(1)").IsRequired(true);
                 eb.Property(b => b.NIF).HasColumnType("nvarchar(50)").IsRequired(true);
                 eb.Property(b => b.Name).HasColumnType("nvarchar(50)").IsRequired(true);
                 eb.Property(b => b.LastName).HasColumnType("nvarchar(50)").IsRequired(true);
+                eb.Property(b => b.ParentPersonNIF).HasColumnType("nvarchar(50)");
             });
 
-            modelBuilder.Entity<Institute>(eb =>
+            modelBuilder.Entity<Person>()
+            .HasOne(a => a.User)
+            .WithOne(b => b.Person)
+            .HasForeignKey<User>(b => b.NIF)
+            .IsRequired(false)
+            .HasPrincipalKey<Person>(c => c.NIF);
+
+            modelBuilder.Entity<Notebook>()
+            .HasOne(a => a.Person)
+            .WithMany(b => b.Notebooks)
+            .HasForeignKey(a => a.NIF);
+
+            modelBuilder.Entity<Center>(eb =>
             {
                 eb.HasKey(b => b.Id);
                 eb.Property(b => b.Id).ValueGeneratedOnAdd();
@@ -57,6 +70,32 @@ namespace vacunAPP.Data
                 eb.Property(b => b.Long).HasColumnType("nvarchar(20)");
                 eb.Property(b => b.Phone).HasColumnType("nvarchar(20)");
             });
+
+            modelBuilder.Entity<Professional>(eb =>
+            {
+                eb.HasKey(b => b.Id);
+                eb.Property(b => b.Id).ValueGeneratedOnAdd();
+                eb.Property(b => b.Name).HasColumnType("nvarchar(250)").IsRequired(true);
+                eb.Property(b => b.LastName).HasColumnType("nvarchar(250)").IsRequired(true);
+                eb.Property(b => b.Name).HasColumnType("nvarchar(250)").IsRequired(true);
+                eb.Property(b => b.NIF).HasColumnType("nvarchar(10)").IsRequired(true);
+                eb.Property(b => b.Function).HasColumnType("nvarchar(25)").IsRequired(true);
+                eb.Property(b => b.Email).HasColumnType("nvarchar(250)").IsRequired(true);
+                eb.Property(b => b.Password).HasColumnType("nvarchar(250)").IsRequired(true);
+                eb.Property(b => b.InstituteId).HasColumnType("int").IsRequired(true);
+            });
+
+            modelBuilder.Entity<Institute>(eb =>
+            {
+                eb.HasKey(b => b.Id);
+                eb.Property(b => b.Id).ValueGeneratedOnAdd();
+                eb.Property(b => b.Name).HasColumnType("nvarchar(250)").IsRequired(true);
+                eb.Property(b => b.CUIT).HasColumnType("nvarchar(25)").IsRequired(true);
+                eb.Property(b => b.License).HasColumnType("nvarchar(25)").IsRequired(true);
+                eb.Property(b => b.Contract).HasColumnType("nvarchar(25)").IsRequired(true);
+                eb.Property(b => b.CreatedAt).HasColumnType("DateTime").IsRequired(true);
+            });
+
 
 
             modelBuilder.Entity<Vaccine>(eb =>
@@ -71,25 +110,27 @@ namespace vacunAPP.Data
                 eb.Property(b => b.Inyection).HasColumnType("nvarchar(500)");
             });
 
-            modelBuilder.Entity<PersonVaccine>()
-            .HasKey(bc => new { bc.PersonId, bc.VaccineId });
-                modelBuilder.Entity<PersonVaccine>()
-                    .HasOne(bc => bc.Person)
-                    .WithMany(b => b.PersonVaccine)
-                    .HasForeignKey(bc => bc.PersonId);
-                modelBuilder.Entity<PersonVaccine>()
-                    .HasOne(bc => bc.Vaccine)
-                    .WithMany(c => c.PersonVaccine)
-                    .HasForeignKey(bc => bc.VaccineId);
+            modelBuilder.Entity<Notebook>(eb =>
+            {
+                eb.HasKey(b => b.Id);
+                eb.Property(b => b.Id).ValueGeneratedOnAdd();
+                eb.Property(b => b.NIF).HasColumnType("nvarchar(50)");
+            });
+
+
+            //modelBuilder.Entity<PersonVaccine>()
+            //.HasKey(bc => new { bc.PersonId, bc.VaccineId });
+            //modelBuilder.Entity<PersonVaccine>()
+            //    .HasOne(bc => bc.Person)
+            //    .WithMany(b => b.PersonVaccine)
+            //    .HasForeignKey(bc => bc.PersonId);
+            //modelBuilder.Entity<PersonVaccine>()
+            //    .HasOne(bc => bc.Vaccine)
+            //    .WithMany(c => c.PersonVaccine)
+            //    .HasForeignKey(bc => bc.VaccineId);
 
             modelBuilder.Entity<User>()
             .ToTable("Users");
-
-            modelBuilder.Entity<User>()
-            .HasMany(c => c.Persons)
-            .WithOne(e => e.User)
-            .HasForeignKey(c => c.UserId)
-            .IsRequired();
 
 
             modelBuilder.Entity<Vaccine>()
@@ -547,9 +588,9 @@ namespace vacunAPP.Data
 
            );
 
-            modelBuilder.Entity<Institute>()
+            modelBuilder.Entity<Center>()
             .HasData(
-                 new Institute
+                 new Center
                  {
                      Id = 1,
                      Name = "Hospital Álvarez",
@@ -559,7 +600,7 @@ namespace vacunAPP.Data
                      Lat = "-34.624292",
                      Long = "-58.469422"
                  },
-              new Institute
+              new Center
               {
                   Id = 2,
                   Name = "CeSac 34",
@@ -570,7 +611,7 @@ namespace vacunAPP.Data
                   Long = "-58.478186",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 3,
                   Name = "Hospital Argerich",
@@ -581,7 +622,7 @@ namespace vacunAPP.Data
                   Long = "-58.366048",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 4,
                   Name = "CeSac 9",
@@ -592,7 +633,7 @@ namespace vacunAPP.Data
                   Long = "-58.366091",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 5,
                   Name = "CeSac 15",
@@ -603,7 +644,7 @@ namespace vacunAPP.Data
                   Long = "-58.372486",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 6,
                   Name = "CeSac 41",
@@ -614,7 +655,7 @@ namespace vacunAPP.Data
                   Long = "-58.357852",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 7,
                   Name = "Centro Boca - Barracas",
@@ -625,7 +666,7 @@ namespace vacunAPP.Data
                   Long = "-58.368022",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 8,
                   Name = "Hospital de Clínicas",
@@ -636,7 +677,7 @@ namespace vacunAPP.Data
                   Long = "-58.400681",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 9,
                   Name = "Hospital Durand",
@@ -647,7 +688,7 @@ namespace vacunAPP.Data
                   Long = "-58.437889",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 10,
                   Name = "CeSac 22",
@@ -658,7 +699,7 @@ namespace vacunAPP.Data
                   Long = "-58.459089",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 11,
                   Name = "CeSac 38",
@@ -669,7 +710,7 @@ namespace vacunAPP.Data
                   Long = "-58.421452",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 12,
                   Name = "Hospital Elizalde",
@@ -680,7 +721,7 @@ namespace vacunAPP.Data
                   Long = "-58.377635",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 13,
                   Name = "Hospital Fernández",
@@ -691,7 +732,7 @@ namespace vacunAPP.Data
                   Long = "-58.406896",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 14,
                   Name = "CeSac 17",
@@ -702,7 +743,7 @@ namespace vacunAPP.Data
                   Long = "-58.420525",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 15,
                   Name = "CeSac 21",
@@ -713,7 +754,7 @@ namespace vacunAPP.Data
                   Long = "-58.373258",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 16,
                   Name = "CeSac 25",
@@ -722,7 +763,7 @@ namespace vacunAPP.Data
                   Time = "lunes a viernes de 9:00 a 15.00 hs",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 17,
                   Name = "CeSac 26",
@@ -733,7 +774,7 @@ namespace vacunAPP.Data
                   Long = "-58.425744",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 18,
                   Name = "CeSac 47",
@@ -744,7 +785,7 @@ namespace vacunAPP.Data
                   Long = "-58.378639",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 19,
                   Name = "Hospital Garrahan",
@@ -755,7 +796,7 @@ namespace vacunAPP.Data
                   Long = "-58.391527",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 20,
                   Name = "Hospital Gutiérrez",
@@ -766,7 +807,7 @@ namespace vacunAPP.Data
                   Long = "-58.412740",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 21,
                   Name = "Hospital Muñiz",
@@ -777,7 +818,7 @@ namespace vacunAPP.Data
                   Long = "-58.393042",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 22,
                   Name = "CeSac 1",
@@ -788,7 +829,7 @@ namespace vacunAPP.Data
                   Long = "-58.389308",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 23,
                   Name = "CeSac 8",
@@ -799,7 +840,7 @@ namespace vacunAPP.Data
                   Long = "-58.395274",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 24,
                   Name = "CeSac 10",
@@ -810,7 +851,7 @@ namespace vacunAPP.Data
                   Long = "-58.383729",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 25,
                   Name = "CeSac 16",
@@ -821,7 +862,7 @@ namespace vacunAPP.Data
                   Long = "-58.374546",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 26,
                   Name = "CeSac 30",
@@ -832,7 +873,7 @@ namespace vacunAPP.Data
                   Long = "-58.401625",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 27,
                   Name = "CeSac 32",
@@ -843,7 +884,7 @@ namespace vacunAPP.Data
                   Long = "-58.431151",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 28,
                   Name = "CeSac 35",
@@ -854,7 +895,7 @@ namespace vacunAPP.Data
                   Long = "-58.399222",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 29,
                   Name = "CeSac 39",
@@ -865,7 +906,7 @@ namespace vacunAPP.Data
                   Long = "-58.409865",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 30,
                   Name = "Hospital Piñero",
@@ -876,7 +917,7 @@ namespace vacunAPP.Data
                   Long = "-58.453681",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 31,
                   Name = "CeSac 6",
@@ -887,7 +928,7 @@ namespace vacunAPP.Data
                   Long = "-58.440949",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 32,
                   Name = "CeSac 13",
@@ -898,7 +939,7 @@ namespace vacunAPP.Data
                   Long = "-58.482134",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 33,
                   Name = "CeSac 18",
@@ -909,7 +950,7 @@ namespace vacunAPP.Data
                   Long = "-58.468230",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 34,
                   Name = "CeSac 19",
@@ -920,7 +961,7 @@ namespace vacunAPP.Data
                   Long = "-58.442266",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 35,
                   Name = "CeSac 20",
@@ -931,7 +972,7 @@ namespace vacunAPP.Data
                   Long = "-58.438103",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 36,
                   Name = "CeSac 24",
@@ -942,7 +983,7 @@ namespace vacunAPP.Data
                   Long = "-58.455484",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 37,
                   Name = "CeSac 31",
@@ -953,7 +994,7 @@ namespace vacunAPP.Data
                   Long = "-58.433683",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 38,
                   Name = "CeSac 40",
@@ -964,7 +1005,7 @@ namespace vacunAPP.Data
                   Long = "-58.445485",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 39,
                   Name = "CeSac 43",
@@ -975,7 +1016,7 @@ namespace vacunAPP.Data
                   Long = "-58.466531",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 40,
                   Name = "CeSac 44",
@@ -986,7 +1027,7 @@ namespace vacunAPP.Data
                   Long = "-58.467500",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 41,
                   Name = "Hospital Cecilia Grierson",
@@ -997,7 +1038,7 @@ namespace vacunAPP.Data
                   Long = "-58.457167",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 42,
                   Name = "CeSac 2",
@@ -1008,7 +1049,7 @@ namespace vacunAPP.Data
                   Long = "-58.509429",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 43,
                   Name = "CeSac 12",
@@ -1019,7 +1060,7 @@ namespace vacunAPP.Data
                   Long = "-58.474324",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 44,
                   Name = "CeSac 27",
@@ -1030,7 +1071,7 @@ namespace vacunAPP.Data
                   Long = "-58.486640",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 45,
                   Name = "Hospital Ramos Mejía",
@@ -1041,7 +1082,7 @@ namespace vacunAPP.Data
                   Long = "-58.409436",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 46,
                   Name = "CeSac 11",
@@ -1052,7 +1093,7 @@ namespace vacunAPP.Data
                   Long = "-58.410594",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 47,
                   Name = "CeSac 45",
@@ -1063,7 +1104,7 @@ namespace vacunAPP.Data
                   Long = "-58.402305",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 48,
                   Name = "Hospital Santojanni",
@@ -1074,7 +1115,7 @@ namespace vacunAPP.Data
                   Long = "-58.515823",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 49,
                   Name = "CeSac 3",
@@ -1085,7 +1126,7 @@ namespace vacunAPP.Data
                   Long = "-58.464147",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 50,
                   Name = "CeSac 4",
@@ -1096,7 +1137,7 @@ namespace vacunAPP.Data
                   Long = "-58.507240",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 51,
                   Name = "CeSac 5",
@@ -1107,7 +1148,7 @@ namespace vacunAPP.Data
                   Long = "-58.495309",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 52,
                   Name = "CeSac 7",
@@ -1118,7 +1159,7 @@ namespace vacunAPP.Data
                   Long = "-58.491275",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 53,
                   Name = "CeSac 28",
@@ -1129,7 +1170,7 @@ namespace vacunAPP.Data
                   Long = "-58.485930",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 54,
                   Name = "CeSac 29",
@@ -1140,7 +1181,7 @@ namespace vacunAPP.Data
                   Long = "-58.488679",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 55,
                   Name = "CeSac 37",
@@ -1151,7 +1192,7 @@ namespace vacunAPP.Data
                   Long = "-58.504135",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 56,
                   Name = "Hospital Sardá",
@@ -1162,7 +1203,7 @@ namespace vacunAPP.Data
                   Long = "-58.402569",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 57,
                   Name = "CeSac 33",
@@ -1173,7 +1214,7 @@ namespace vacunAPP.Data
                   Long = "-58.441751",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 58,
                   Name = "CeSac 36",
@@ -1184,7 +1225,7 @@ namespace vacunAPP.Data
                   Long = "-58.491833",
                   Phone = "0800-555-VACUNAPP"
               },
-              new Institute
+              new Center
               {
                   Id = 59,
                   Name = "Hospital Zubizarreta",
