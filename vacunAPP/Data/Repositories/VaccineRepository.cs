@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +12,16 @@ namespace vacunAPP.Data.Repositories
     {
         public VaccineRepository(vacunAPPContext context) : base(context)
         {
+
+        }
+
+        public async Task<IEnumerable<Vaccine>> GetPersonVaccines(string NIF)
+        {
+            var res = await(from vac in this._context.Vaccine
+                            where !this._context.Notebook.Any(f => f.Vaccine.Id == vac.Id)
+                            where this._context.Notebook.Any(f=> f.NIF == NIF)
+                            select vac).ToListAsync();
+            return res;
 
         }
     }

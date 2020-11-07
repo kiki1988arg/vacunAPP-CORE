@@ -15,7 +15,15 @@ namespace vacunAPP.Helpers
             CreateMap<User, UserViewModel>().ReverseMap();
             CreateMap<Center, CenterViewModel>().ReverseMap();
             CreateMap<Person, UserViewModel>().ReverseMap();
+            CreateMap<Vaccine, VaccineViewModel>().ReverseMap();
+            CreateMap<Notebook, NotebookViewModel>().ReverseMap();
+            CreateMap<Professional, ProfessionalViewModel>().ReverseMap();
             CreateMap<Person, PersonViewModel>().ReverseMap();
+
+
+
+        
+
         }
     }
 }

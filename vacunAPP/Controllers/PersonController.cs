@@ -45,10 +45,13 @@ namespace vacunAPP.Controllers
 
         // GET api/<PersonController>/5
         [HttpGet("{id}")]
-        public async Task<Person> Get(string id)
+        public async Task<PersonViewModel> Get(string id)
         {
             var res=  await this._unitOfWork.Person.GetPersonByNIF(id);
-            return res;
+            PersonViewModel vw = _mapper.Map<Person, PersonViewModel>(res);
+            var vacVw = await this._unitOfWork.Vaccines.GetPersonVaccines(vw.NIF);
+            vw.Vaccines = _mapper.Map<IEnumerable<Vaccine>, IEnumerable<VaccineViewModel>>(vacVw);
+            return vw;
         }
 
 

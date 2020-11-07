@@ -8,5 +8,6 @@ namespace vacunAPP.Core.Repositories
 {
     public interface IVaccineRepository : IRepository<Vaccine>
     {
+        Task<IEnumerable<Vaccine>> GetPersonVaccines(string NIF);
     }
 }
