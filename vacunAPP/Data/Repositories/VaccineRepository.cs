@@ -18,12 +18,12 @@ namespace vacunAPP.Data.Repositories
         public async Task<IEnumerable<Vaccine>> GetPersonVaccines(string NIF)
         {
             var res = await(from vac in this._context.Vaccine
-                            where !this._context.Notebook.Any(f => f.Vaccine.Id == vac.Id)
-                            where this._context.Notebook.Any(f=> f.NIF == NIF)
+                            where (!this._context.Notebook.Any(f => f.Vaccine.Id == vac.Id && f.NIF == NIF))
                             select vac).ToListAsync();
             return res;
 
         }
+
     }
 
 

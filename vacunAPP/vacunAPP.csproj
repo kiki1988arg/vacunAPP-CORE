@@ -28,6 +28,8 @@
     <Compile Remove="Migrations\20201104010814_AddIdToPerson.Designer.cs" />
     <Compile Remove="Migrations\20201106004531_NotebookPersonRelationship.cs" />
     <Compile Remove="Migrations\20201106004531_NotebookPersonRelationship.Designer.cs" />
+    <Compile Remove="Migrations\20201121012426_AddNavigationPropertyNotebookToVaccine.cs" />
+    <Compile Remove="Migrations\20201121012426_AddNavigationPropertyNotebookToVaccine.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
