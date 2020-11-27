@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using vacunAPP.Data;
 
 namespace vacunAPP.Migrations
 {
     [DbContext(typeof(vacunAPPContext))]
-    partial class vacunAPPContextModelSnapshot : ModelSnapshot
+    [Migration("20201125215725_AddPedroKhanToProfesional")]
+    partial class AddPedroKhanToProfesional
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -887,7 +889,7 @@ namespace vacunAPP.Migrations
                         {
                             Id = 3,
                             Email = "Pedro@Kahn.com",
-                            Function = "P",
+                            Function = "Profesional",
                             InstituteId = 999999,
                             LastName = "Kahn",
                             MN = "5132135",

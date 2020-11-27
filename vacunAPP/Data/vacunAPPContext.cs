@@ -89,11 +89,11 @@ namespace vacunAPP.Data
             {
                 eb.HasKey(b => b.Id);
                 eb.Property(b => b.Id).ValueGeneratedOnAdd();
-                eb.Property(b => b.Name).HasColumnType("nvarchar(250)").IsRequired(true);
+                eb.Property(b => b.InstituteName).HasColumnType("nvarchar(250)").IsRequired(true);
                 eb.Property(b => b.CUIT).HasColumnType("nvarchar(25)").IsRequired(true);
                 eb.Property(b => b.License).HasColumnType("nvarchar(25)").IsRequired(true);
                 eb.Property(b => b.Contract).HasColumnType("nvarchar(25)").IsRequired(true);
-                eb.Property(b => b.CreatedAt).HasColumnType("DateTime").IsRequired(true);
+                eb.Property(b => b.CreatedAt).HasColumnType("DateTime2").IsRequired(true);
             });
 
 
@@ -133,7 +133,9 @@ namespace vacunAPP.Data
             .ToTable("Users");
 
 
-            modelBuilder.Entity<Vaccine>()
+
+
+           modelBuilder.Entity<Vaccine>()
            .HasData(
                      new Vaccine
                      {
@@ -582,6 +584,16 @@ namespace vacunAPP.Data
                          Name = "Gripe",
                          Inyection = "(dosis anual)",
                          Description = "Previene las complicaciones y muerte causadas por el virus de la influenza.",
+                         ApplicationType = "Forma de aplicación: Intramuscular.",
+                         ExtraInfo = ""
+                     },
+                     new Vaccine
+                     {
+                         Id = 46,
+                         Month = 0,
+                         Name = "Covid-19",
+                         Inyection = "(dosis anual)",
+                         Description = "Previene las complicaciones y muerte causadas por el virus Covid-19.",
                          ApplicationType = "Forma de aplicación: Intramuscular.",
                          ExtraInfo = ""
                      }
@@ -1235,8 +1247,60 @@ namespace vacunAPP.Data
                   Lat = "-34.599903",
                   Long = "-58.511231",
                   Phone = "0800-555-VACUNAPP"
-              }
+              },
+               new Center
+               {
+                Id = 999999,
+                Name = "Auto gestionada",
+                Address = "Auto gestionada",
+                Locale = "0",
+                Time = "0",
+                Lat = "0",
+                Long = "0",
+                Phone = "0"
+               }
 
+            );
+
+            modelBuilder.Entity<Institute>()
+            .HasData(
+                new Institute
+                {
+                    Id = 999999,
+                    InstituteName = "-",
+                    CUIT = "-",
+                    License = "-",
+                    Contract = "-",
+                    CreatedAt = DateTime.Parse("2020-01-01 00:00:00.000")
+                }
+            ) ;
+
+            modelBuilder.Entity<Professional>()
+            .HasData(
+                new Professional
+                {
+                    Id = 999999,
+                    MN = "999999",
+                    Name = "-",
+                    LastName = "-",
+                    NIF = "-",
+                    Function = "-",
+                    InstituteId = 999999,
+                    Email = "-",
+                    Password = "-",
+                },
+                new Professional
+                {
+                    Id = 3,
+                    MN = "5132135",
+                    Name = "Pedro",
+                    LastName = "Kahn",
+                    NIF = "5132135",
+                    Function = "P",
+                    InstituteId = 999999,
+                    Email = "Pedro@Kahn.com",
+                    Password = "Pedro@Kahn.com",
+                }
             );
 
         }

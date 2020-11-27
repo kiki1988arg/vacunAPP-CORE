@@ -8,7 +8,7 @@ namespace vacunAPP.Core.Domain
     public class Institute
     {
         public int Id { set; get; }
-        public string Name { set; get; }
+        public string InstituteName { set; get; }
         public string CUIT { set; get; }
         public string License { set; get; }
         public string Contract { set; get; }

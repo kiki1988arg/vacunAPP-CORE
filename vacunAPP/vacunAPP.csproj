@@ -30,10 +30,45 @@
     <Compile Remove="Migrations\20201106004531_NotebookPersonRelationship.Designer.cs" />
     <Compile Remove="Migrations\20201121012426_AddNavigationPropertyNotebookToVaccine.cs" />
     <Compile Remove="Migrations\20201121012426_AddNavigationPropertyNotebookToVaccine.Designer.cs" />
+    <Compile Remove="Migrations\20201123181156_addProfessionalAutogestionado.cs" />
+    <Compile Remove="Migrations\20201123181156_addProfessionalAutogestionado.Designer.cs" />
+    <Compile Remove="Migrations\20201123181307_addProfessionalAutogestionado.cs" />
+    <Compile Remove="Migrations\20201123181307_addProfessionalAutogestionado.Designer.cs" />
+    <Compile Remove="Migrations\20201123181701_addProfessionalInstituteAutogestionado.cs" />
+    <Compile Remove="Migrations\20201123181701_addProfessionalInstituteAutogestionado.Designer.cs" />
+    <Compile Remove="Migrations\20201123181745_addProfessionalInstituteAutogestionado.cs" />
+    <Compile Remove="Migrations\20201123181745_addProfessionalInstituteAutogestionado.Designer.cs" />
+    <Compile Remove="Migrations\20201123181955_addProfessionalInstituteAutogestionado.cs" />
+    <Compile Remove="Migrations\20201123181955_addProfessionalInstituteAutogestionado.Designer.cs" />
+    <Compile Remove="Migrations\20201123182109_addProfessionalInstituteAutogestionado.cs" />
+    <Compile Remove="Migrations\20201123182109_addProfessionalInstituteAutogestionado.Designer.cs" />
+    <Compile Remove="Migrations\20201123182226_addProfessionalInstituteAutogestionado.cs" />
+    <Compile Remove="Migrations\20201123182226_addProfessionalInstituteAutogestionado.Designer.cs" />
+    <Compile Remove="Migrations\20201123182445_addProfessionalInstituteAutogestionado.cs" />
+    <Compile Remove="Migrations\20201123182445_addProfessionalInstituteAutogestionado.Designer.cs" />
+    <Compile Remove="Migrations\20201123182738_addProfessionalInstituteAutogestionado.cs" />
+    <Compile Remove="Migrations\20201123182738_addProfessionalInstituteAutogestionado.Designer.cs" />
+    <Compile Remove="Migrations\20201123183022_addProfessionalInstituteAutogestionado.cs" />
+    <Compile Remove="Migrations\20201123183022_addProfessionalInstituteAutogestionado.Designer.cs" />
+    <Compile Remove="Migrations\20201123183253_addProfessionalInstituteAutogestionado.cs" />
+    <Compile Remove="Migrations\20201123183253_addProfessionalInstituteAutogestionado.Designer.cs" />
+    <Compile Remove="Migrations\20201123183426_addProfessionalInstituteAutogestionado.cs" />
+    <Compile Remove="Migrations\20201123183426_addProfessionalInstituteAutogestionado.Designer.cs" />
+    <Compile Remove="Migrations\20201123185542_AddPropertyToNotebook.cs" />
+    <Compile Remove="Migrations\20201123185542_AddPropertyToNotebook.Designer.cs" />
+    <Compile Remove="Migrations\20201123185746_AddPropertyToNotebook.cs" />
+    <Compile Remove="Migrations\20201123185746_AddPropertyToNotebook.Designer.cs" />
+    <Compile Remove="Migrations\20201124012415_next.cs" />
+    <Compile Remove="Migrations\20201124012415_next.Designer.cs" />
+    <Compile Remove="Migrations\20201124012605_next.cs" />
+    <Compile Remove="Migrations\20201124012605_next.Designer.cs" />
+    <Compile Remove="Migrations\20201125215558_AddPedroKhanToProfesional.cs" />
+    <Compile Remove="Migrations\20201125215558_AddPedroKhanToProfesional.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.9" />

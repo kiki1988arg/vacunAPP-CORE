@@ -25,7 +25,7 @@ namespace vacunAPP.Data.Repositories
 
         async Task<IEnumerable<Person>> IPersonRepository.GetPersonsById(string Id)
         {
-            return await _context.Person.Where(c => c.ParentPersonNIF == Id).ToListAsync();
+            return await _context.Person.Where(c => c.ParentPersonNIF == Id && c.NIF != Id).OrderBy(x => x.BornDate).ToListAsync();
         }
     }
 }

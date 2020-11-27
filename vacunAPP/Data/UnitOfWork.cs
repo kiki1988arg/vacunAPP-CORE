@@ -17,6 +17,7 @@ namespace vacunAPP.Data
         public IICenterRepository Institute { get; }
         public IPersonRepository Person { get; }
         public IINotebookRepository Notebook { get; }
+        public IProfessionalRepository Professional { get; }
 
 
 
@@ -28,6 +29,7 @@ namespace vacunAPP.Data
             this.Institute = new CenterRepository(_context);
             this.Person = new PersonRepository(_context);
             this.Notebook = new NotebookRepository(_context);
+            this.Professional = new ProfessionalRepository(_context);
         }
         public int Complete()
         {

@@ -44,6 +44,7 @@ namespace vacunAPP.Controllers
             signIn.password = BaseEncodeDecode.Base64Encode(signIn.password);
             user = _mapper.Map<User>(signIn);
             person = _mapper.Map<Person>(signIn);
+            person.ParentPersonNIF = signIn.NIF;
             _unitOfWork.User.Add(user);
             _unitOfWork.Person.Add(person);
             _unitOfWork.Complete();

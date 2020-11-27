@@ -17,6 +17,7 @@ using vacunAPP.Data;
 using vacunAPP.Data.Repositories;
 using System.Text;
 using AutoMapper;
+using Azure.Storage.Blobs;
 
 namespace vacunAPP
 {
@@ -79,6 +80,8 @@ namespace vacunAPP
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
+            services.AddScoped(x => new BlobServiceClient(Configuration.GetValue<string>("AzureBlobStorage")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

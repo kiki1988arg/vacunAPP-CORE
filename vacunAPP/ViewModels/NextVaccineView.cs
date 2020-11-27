@@ -14,6 +14,7 @@ namespace vacunAPP.ViewModels
         public string PersonName { get; set; }
         public string Gender { get; set; }
         public string PersonLastName { get; set; }
+        public DateTime PersonBornDate { get; set; }
         public int Month { get; set; }
     }
 }

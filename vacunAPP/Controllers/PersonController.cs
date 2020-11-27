@@ -5,9 +5,11 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using vacunAPP.Core;
 using vacunAPP.Core.Domain;
+using vacunAPP.Helpers;
 using vacunAPP.ViewModels;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -21,7 +23,6 @@ namespace vacunAPP.Controllers
     {
         private IUnitOfWork _unitOfWork;
         private IMapper _mapper;
-
         public PersonController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
@@ -64,6 +65,27 @@ namespace vacunAPP.Controllers
             this._unitOfWork.Person.Add(person);
             this._unitOfWork.Complete();
         }
+
+        //[HttpPost]
+        //[Route("upload")]
+        //public async Task<ActionResult> UploadProfilePicture()
+        //{
+        //    IFormFile file = Request.Form.Files[0];
+        //    if (file == null)
+        //    {
+        //        return BadRequest();
+        //    }
+
+        //    var result = await _blobService.UploadFileBlobAsync(
+        //            "firstcontainer",
+        //            file.OpenReadStream(),
+        //            file.ContentType,
+        //            file.FileName);
+
+        //    var toReturn = result.AbsoluteUri;
+
+        //    return Ok(new { path = toReturn });
+        //}
 
         // PUT api/<PersonController>/5
         [HttpPut("{id}")]

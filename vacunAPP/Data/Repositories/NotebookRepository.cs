@@ -35,6 +35,7 @@ namespace vacunAPP.Data.Repositories
                                      Name = vac.Name,
                                      PersonName = person.Name,
                                      PersonLastName = person.LastName,
+                                     PersonBornDate = person.BornDate,
                                      NIF = person.NIF,
                                      Description = vac.Description,
                                      Month = vac.Month,

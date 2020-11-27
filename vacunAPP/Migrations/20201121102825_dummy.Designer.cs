@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using vacunAPP.Data;
 
 namespace vacunAPP.Migrations
 {
     [DbContext(typeof(vacunAPPContext))]
-    partial class vacunAPPContextModelSnapshot : ModelSnapshot
+    [Migration("20201121102825_dummy")]
+    partial class dummy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -706,17 +708,6 @@ namespace vacunAPP.Migrations
                             Name = "Hospital Zubizarreta",
                             Phone = "0800-555-VACUNAPP",
                             Time = "lunes a viernes de 8:00 a 14:00 hs"
-                        },
-                        new
-                        {
-                            Id = 999999,
-                            Address = "Auto gestionada",
-                            Lat = "0",
-                            Locale = "0",
-                            Long = "0",
-                            Name = "Auto gestionada",
-                            Phone = "0",
-                            Time = "0"
                         });
                 });
 
@@ -736,30 +727,19 @@ namespace vacunAPP.Migrations
                         .HasColumnType("nvarchar(25)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("DateTime2");
-
-                    b.Property<string>("InstituteName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(250)");
+                        .HasColumnType("DateTime");
 
                     b.Property<string>("License")
                         .IsRequired()
                         .HasColumnType("nvarchar(25)");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(250)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Institute");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 999999,
-                            CUIT = "-",
-                            Contract = "-",
-                            CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            InstituteName = "-",
-                            License = "-"
-                        });
                 });
 
             modelBuilder.Entity("vacunAPP.Core.Domain.Notebook", b =>
@@ -772,16 +752,16 @@ namespace vacunAPP.Migrations
                     b.Property<DateTime>("ApplicationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CenterId")
+                    b.Property<int?>("CenterId")
                         .HasColumnType("int");
 
                     b.Property<string>("NIF")
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("ProfessionalId")
+                    b.Property<int?>("ProfessionalId")
                         .HasColumnType("int");
 
-                    b.Property<int>("VaccineId")
+                    b.Property<int?>("VaccineId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -869,32 +849,6 @@ namespace vacunAPP.Migrations
                     b.HasIndex("InstituteId");
 
                     b.ToTable("Profesional");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 999999,
-                            Email = "-",
-                            Function = "-",
-                            InstituteId = 999999,
-                            LastName = "-",
-                            MN = "999999",
-                            NIF = "-",
-                            Name = "-",
-                            Password = "-"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Email = "Pedro@Kahn.com",
-                            Function = "P",
-                            InstituteId = 999999,
-                            LastName = "Kahn",
-                            MN = "5132135",
-                            NIF = "5132135",
-                            Name = "Pedro",
-                            Password = "Pedro@Kahn.com"
-                        });
                 });
 
             modelBuilder.Entity("vacunAPP.Core.Domain.User", b =>
@@ -1397,16 +1351,6 @@ namespace vacunAPP.Migrations
                             Inyection = "(dosis anual)",
                             Month = (short)780,
                             Name = "Gripe"
-                        },
-                        new
-                        {
-                            Id = 46,
-                            ApplicationType = "Forma de aplicación: Intramuscular.",
-                            Description = "Previene las complicaciones y muerte causadas por el virus Covid-19.",
-                            ExtraInfo = "",
-                            Inyection = "(dosis anual)",
-                            Month = (short)0,
-                            Name = "Covid-19"
                         });
                 });
 
@@ -1421,9 +1365,7 @@ namespace vacunAPP.Migrations
                 {
                     b.HasOne("vacunAPP.Core.Domain.Center", "Center")
                         .WithMany()
-                        .HasForeignKey("CenterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CenterId");
 
                     b.HasOne("vacunAPP.Core.Domain.Person", "Person")
                         .WithMany("Notebooks")
@@ -1431,15 +1373,11 @@ namespace vacunAPP.Migrations
 
                     b.HasOne("vacunAPP.Core.Domain.Professional", "Professional")
                         .WithMany()
-                        .HasForeignKey("ProfessionalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProfessionalId");
 
                     b.HasOne("vacunAPP.Core.Domain.Vaccine", "Vaccine")
                         .WithMany("Notebooks")
-                        .HasForeignKey("VaccineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("VaccineId");
                 });
 
             modelBuilder.Entity("vacunAPP.Core.Domain.Person", b =>

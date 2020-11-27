@@ -7,6 +7,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using vacunAPP.Core;
+using vacunAPP.Core.Domain;
 using vacunAPP.ViewModels;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -47,14 +48,45 @@ namespace vacunAPP.Controllers
 
         // POST api/<NotebookController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult Post([FromBody] AddNotebookVm notebookVw)
         {
+            Notebook nb = new Notebook();
+            nb.NIF = notebookVw.NIF;
+            nb.VaccineId = notebookVw.VaccineId;
+            nb.ProfessionalId = 999999;
+            nb.CenterId = 999999;
+            nb.ApplicationDate = DateTime.Now;
+            this._unitOfWork.Notebook.Add(nb);
+            this._unitOfWork.Complete();
+            return Ok(200);            
+        }
+
+        // POST api/<NotebookController>
+        [HttpPost]
+        [Route("validate")]
+        public ActionResult PostAndValidate([FromBody] AddNotebookVm notebookVw)
+        {
+            Notebook nb = new Notebook();
+            nb.NIF = notebookVw.NIF;
+            nb.VaccineId = notebookVw.VaccineId;
+            nb.ProfessionalId = int.Parse(User.FindFirst("Id")?.Value); 
+            nb.CenterId = 3;
+            nb.ApplicationDate = DateTime.Now;
+            this._unitOfWork.Notebook.Add(nb);
+            this._unitOfWork.Complete();
+            return Ok(200);
         }
 
         // PUT api/<NotebookController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        public async Task<ActionResult> PutAsync([FromBody] AddNotebookVm notebookVw)
         {
+            Notebook nb = await this._unitOfWork.Notebook.Get(notebookVw.Id);
+            nb.ProfessionalId = int.Parse(User.FindFirst("Id")?.Value);
+            nb.CenterId = 3;
+            nb.ApplicationDate = DateTime.Now;
+            this._unitOfWork.Complete();
+            return Ok(200);
         }
 
         // DELETE api/<NotebookController>/5
